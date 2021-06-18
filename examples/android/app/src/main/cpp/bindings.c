@@ -6,7 +6,7 @@
 
 #include "parsec.h"
 
-static void logCallback(ParsecLogLevel level, char *msg, void *opaque)
+static void logCallback(ParsecLogLevel level, const char *msg, void *opaque)
 {
     __android_log_print(ANDROID_LOG_INFO, "PARSEC", "%s", msg);
 }
@@ -58,7 +58,7 @@ Java_parsec_bindings_Parsec_clientConnect(JNIEnv *env, jobject instance, jstring
     const char *cSessionID = (*env)->GetStringUTFChars(env, sessionID, 0);
     const char *cPeerID = (*env)->GetStringUTFChars(env, peerID, 0);
 
-    ParsecStatus e = ParsecClientConnect(parsec, NULL, (char *) cSessionID, (char *) cPeerID);
+    ParsecStatus e = ParsecClientConnect(parsec, NULL, cSessionID, cPeerID);
 
     (*env)->ReleaseStringUTFChars(env, sessionID, cSessionID);
     (*env)->ReleaseStringUTFChars(env, peerID, cPeerID);
@@ -86,7 +86,7 @@ Java_parsec_bindings_Parsec_clientSetDimensions(JNIEnv *env, jobject instance,
     jint x, jint y)
 {
     Parsec *parsec = getPointer(env, instance, "parsec");
-    ParsecClientSetDimensions(parsec, (uint32_t) x, (uint32_t) y, 1.0f);
+    ParsecClientSetDimensions(parsec, 0, (uint32_t) x, (uint32_t) y, 1.0f);
 }
 
 JNIEXPORT jint JNICALL
